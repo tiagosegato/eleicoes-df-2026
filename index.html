@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Como votar: Eleições DF 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: coluna única — colinha de urna no topo, legenda do espectro, abas por cargo na ordem de votação, fontes no rodapé. Tema escuro fixo por escolha do usuário. */
+:root{
+  --bg:#141518;
+  --surface:#1c1e22;
+  --surface-2:#24272c;
+  --line:#33363c;
+  --fg:#f4f4f2;
+  --muted:#a3a5aa;
+  --urna:#e9e6dc;
+  --urna-ink:#1b1c1f;
+  --accent:#e9e6dc;
+  --c-xe:#A32D2D;--c-e:#D85A30;--c-ce:#BA7517;--c-c:#639922;--c-cd:#378ADD;--c-d:#534AB7;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px;padding-block:28px 48px;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;font-weight:800;letter-spacing:-0.01em}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.05}
+h2{font-size:22px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);max-width:62ch;margin:6px 0 0}
+header{display:flex;flex-direction:column;gap:10px}
+.tse-badge{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--fg);text-decoration:none;background:var(--surface)}
+.tse-badge:hover{border-color:var(--muted)}
+.tse-badge b{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em}
+section{display:flex;flex-direction:column;gap:16px}
+.sec-head{display:flex;flex-direction:column;gap:4px}
+
+/* Colinha */
+.cola{background:var(--urna);color:var(--urna-ink);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.cola-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;border-bottom:2px solid var(--urna-ink);padding-bottom:10px;margin-bottom:6px}
+.cola-top h2{font-size:20px;color:var(--urna-ink)}
+.cola-top span{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.slot{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:12px;align-items:center;padding:7px 0;border-bottom:1px dashed #b9b5a8}
+.slot:last-of-type{border-bottom:none}
+.ord{font-family:var(--f-mono);font-weight:700;font-size:14px;color:#5b5a55}
+.slot-info{min-width:0;display:flex;flex-direction:column;gap:2px}
+.slot-name{font-weight:700;font-size:16px}
+.slot-res{font-size:13px;color:#4a4943;min-height:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.slot-res.err{color:#9b2c2c}
+.digits{display:flex;gap:5px}
+.digits input{width:32px;height:40px;text-align:center;font-family:var(--f-mono);font-size:22px;font-weight:700;border:2px solid var(--urna-ink);border-radius:6px;background:#fff;color:var(--urna-ink);padding:0}
+.digits input:focus{outline:3px solid var(--c-cd);outline-offset:1px}
+.cola-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}
+.cola-actions p{margin:0;font-size:12px;color:#5b5a55;max-width:56ch}
+.btn{font:inherit;font-size:13px;font-weight:500;border-radius:8px;padding:7px 14px;cursor:pointer;border:1px solid var(--urna-ink);background:transparent;color:var(--urna-ink)}
+.btn:hover{background:var(--urna-ink);color:var(--urna)}
+.btn:focus-visible{outline:3px solid var(--c-cd);outline-offset:2px}
+
+/* Legenda dos partidos */
+.spectrum{display:flex;height:8px;border-radius:4px;overflow:hidden}
+.spectrum div{flex:1}
+.spec-ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:-8px}
+.band{border-left:4px solid var(--c);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:8px}
+.bh{font-weight:700;font-size:15px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pcard{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-width:0}
+.pnum{min-width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:16px;font-weight:700;color:#fff;background:var(--c)}
+.psg{font-weight:700;font-size:14px;line-height:1.3}
+.pnm{font-size:12px;color:var(--muted);line-height:1.35}
+
+/* Abas */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tab{font:inherit;font-size:14px;font-weight:500;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.tab .o{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.tab[aria-selected="true"]{color:var(--urna-ink);background:var(--urna);border-color:var(--urna)}
+.tab[aria-selected="true"] .o{color:#5b5a55}
+.tab:focus-visible{outline:2px solid var(--c-cd);outline-offset:2px}
+.panel-meta{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.panel-meta p{margin:0;color:var(--muted);font-size:13px}
+.search{font:inherit;font-size:14px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:7px 12px;min-width:0;width:240px;max-width:100%}
+.search:focus{outline:2px solid var(--c-cd);outline-offset:1px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums}
+th{text-align:left;font-weight:500;color:var(--muted);padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:12.5px;position:sticky;top:0;background:var(--surface)}
+th small{display:block;font-weight:400;font-size:11px}
+td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.r,th.r{text-align:right}
+td.num{font-family:var(--f-mono);font-weight:500}
+.cand{font-weight:500}
+.m{color:var(--muted)}
+.b{display:inline-block;padding:2px 8px;border-radius:6px;color:#fff;font-size:12px;font-weight:500;white-space:nowrap}
+.sep td{background:var(--surface-2);color:var(--muted);font-size:12px;padding:6px 10px}
+.yes{font-weight:700}
+.empty{padding:18px;color:var(--muted);text-align:center}
+.cmeta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:11px;color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.btn-solid{background:var(--urna-ink);color:var(--urna)}
+.btn-solid:hover{background:#000;color:var(--urna)}
+
+/* Modo print */
+body.printing .wrap > *:not(#print-view){display:none!important}
+#print-view{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+.pv{background:var(--urna);color:var(--urna-ink);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.pv-head{display:flex;flex-direction:column;gap:2px;border-bottom:2px solid var(--urna-ink);padding-bottom:8px}
+.pv-head strong{font-family:var(--f-display);font-size:22px;font-weight:800}
+.pv-head span{font-size:13px;color:#4a4943}
+.pv-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.pv-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:9px 0;border-bottom:1px dashed #b9b5a8}
+.pv-list li:last-child{border-bottom:none}
+.pv-cargo{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#5b5a55;font-weight:500}
+.pv-nome{font-size:15px;font-weight:700;grid-column:1;display:flex;gap:6px;align-items:center;flex-wrap:wrap;min-width:0}
+.pv-num{grid-column:2;grid-row:1/span 2;font-family:var(--f-mono);font-weight:700;font-size:28px;letter-spacing:.08em}
+.pv-num.vazio{font-size:14px;color:#8a8880;letter-spacing:0;font-family:var(--f-body);font-weight:500}
+.pv-foot{font-size:12px;color:#5b5a55}
+.btn-back{font:inherit;font-size:14px;font-weight:500;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer}
+
+@media (max-width:640px){
+  .wrap{padding-inline:14px;padding-block:20px 36px;gap:34px}
+  h2{font-size:19px}
+  .cola{padding:12px 12px 14px;gap:0}
+  .cola-top{padding-bottom:6px;margin-bottom:2px}
+  .cola-top h2{font-size:17px}
+  .slot{grid-template-columns:16px minmax(0,1fr) auto;gap:8px;padding:6px 0}
+  .slot .digits{grid-column:auto}
+  .ord{font-size:12px}
+  .slot-name{font-size:14px;line-height:1.25}
+  .slot-res{font-size:12px;min-height:0}
+  .slot-res .b{font-size:11px;padding:1px 6px}
+  .digits{gap:3px}
+  .digits input{width:clamp(24px,7.4vw,32px);height:36px;font-size:18px;border-width:1.5px;border-radius:5px}
+  .cola-actions{margin-top:8px}
+  .cola-actions .btn{flex:1 1 120px;padding:9px}
+  .pv{padding:14px 14px}
+  .pv-list li{padding:6px 0}
+  .pv-num{font-size:24px}
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .pcard{padding:7px 8px;gap:8px}
+  .pnum{min-width:32px;height:32px;font-size:14px}
+  .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .tab{justify-content:center;padding:9px 6px;font-size:13px;gap:5px}
+  .tabs .tab .f{display:none}
+  .tabs .tab .s{display:inline}
+  .search{width:100%}
+  table{font-size:13px}
+  th,td{padding:7px 8px}
+  .col-ord{display:none}
+  th small{font-size:10px}
+}
+
+/* Fontes */
+.sources{display:flex;flex-direction:column;gap:10px}
+.src-main{background:var(--surface);border:1px solid var(--urna);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.src-main a{color:var(--fg);font-weight:700}
+.src-list{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.src-list a{color:var(--fg)}
+footer{color:var(--muted);font-size:12px}
+.hint{margin:0;color:var(--muted);font-size:14px}
+#sec-cola{margin-top:-32px}
+@media (max-width:640px){#sec-cola{margin-top:-24px}}
+.to-top{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:10;width:46px;height:46px;border-radius:50%;border:1px solid var(--urna);background:var(--urna);color:var(--urna-ink);font-size:20px;font-weight:700;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.to-top:focus-visible{outline:3px solid var(--c-cd);outline-offset:2px}
+body.printing .to-top{display:none}
+.wrap{padding-bottom:84px}
+.tab .s{display:none}
+.scale{display:flex;flex-direction:column;gap:6px}
+.scale .spectrum{height:10px;gap:2px;border-radius:5px}
+.scale-lbl{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;font-size:11.5px;line-height:1.25;color:var(--muted);text-align:center}
+.leg-det summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--urna-ink);background:var(--urna);border:1px solid var(--urna);border-radius:8px;padding:8px 12px}
+.leg-det summary::-webkit-details-marker{display:none}
+.leg-det summary::after{content:"+";font-family:var(--f-mono);color:var(--urna-ink)}
+.leg-det[open] summary::after{content:"–"}
+.leg-det summary:focus-visible{outline:2px solid var(--c-cd);outline-offset:2px}
+@media (max-width:640px){.scale-lbl{font-size:10px}}
+@media (prefers-reduced-motion:no-preference){.tab,.btn{transition:background .15s,color .15s}}
+</style>
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <h1>Como votar: Eleições DF 2026</h1>
+    <p class="lead">No DF, você vota em 6 cargos, nesta ordem na urna: deputado federal, deputado distrital, dois senadores, governador e presidente.</p>
+  </header>
+
+  <section aria-labelledby="cola-h" id="sec-cola">
+    <p class="hint">Preencha após navegar pelo site e conhecer melhor os partidos e candidatos.</p>
+    <div class="cola">
+      <div class="cola-top"><h2 id="cola-h">Colinha</h2><span>4 de outubro · 1º turno</span></div>
+      <div id="slots"></div>
+      <div class="cola-actions">
+        <button class="btn" id="limpar" type="button">Limpar colinha</button>
+        <button class="btn btn-solid" id="printar" type="button">Preparar para print</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="print-view" hidden aria-label="Colinha pronta para print">
+    <div class="pv">
+      <div class="pv-head"><strong>Minha colinha</strong><span>Eleições DF 2026 · 4 de outubro</span></div>
+      <ol class="pv-list" id="pv-list"></ol>
+      <div class="pv-foot">Leve no dia da votação. Celular não pode entrar na cabine: anote também no papel.</div>
+    </div>
+    <button class="btn-back" id="voltar" type="button">Voltar</button>
+  </section>
+
+  <section aria-labelledby="leg-h">
+    <div class="sec-head"><h2 id="leg-h">Partidos</h2><p class="hint">Saiba onde cada partido fica no espectro político.</p></div>
+    <div class="scale">
+      <div class="spectrum"><div style="background:var(--c-xe)"></div><div style="background:var(--c-e)"></div><div style="background:var(--c-ce)"></div><div style="background:var(--c-c)"></div><div style="background:var(--c-cd)"></div><div style="background:var(--c-d)"></div></div>
+      <div class="scale-lbl"><span>Extrema<br>esquerda</span><span>Esquerda</span><span>Centro-<br>esquerda</span><span>Centro</span><span>Centro-<br>direita</span><span>Direita /<br>ext. direita</span></div>
+    </div>
+    <details class="leg-det">
+      <summary>Ver a posição de cada partido</summary>
+      <div id="legenda" style="display:flex;flex-direction:column;gap:18px;margin-top:14px"></div>
+    </details>
+  </section>
+
+  <section aria-labelledby="cand-h">
+    <div class="sec-head"><h2 id="cand-h">Candidatos</h2><p class="hint">Selecione um cargo para ver os candidatos e as pesquisas mais recentes.</p></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="panel-meta">
+      <p id="meta"></p>
+      <label for="busca" style="display:contents"><input class="search" id="busca" type="search" placeholder="Buscar nome, partido ou número" autocomplete="off"></label>
+    </div>
+    <div class="tbl-wrap" role="tabpanel" id="painel"><table id="tabela"></table></div>
+  </section>
+
+  <section aria-labelledby="src-h" class="sources">
+    <div class="sec-head"><h2 id="src-h">Fontes</h2><p class="hint">De onde vieram os candidatos e as pesquisas.</p></div>
+    <div class="src-main">
+      <span class="eyebrow">Fonte principal · candidaturas</span>
+      <a href="https://divulgacandcontas.tse.jus.br/divulga/#/candidato/CENTROOESTE/DF/20322002026" target="_blank" rel="noopener">TSE – DivulgaCandContas (Distrito Federal, 2026)</a>
+      <span class="m" style="font-size:13px">Nomes de urna, partidos, números e situação do registro. Candidatos inaptos não aparecem. Ordem da urna conforme o <a href="https://www.tse.jus.br/eleicoes/simulador-de-votacao" target="_blank" rel="noopener" style="color:var(--fg)">simulador de votação do TSE</a>.</span>
+    </div>
+    <ul class="src-list">
+      <li><a href="https://www.metropoles.com/colunas/grande-angular/pesquisa-igape-record-mostra-intencao-de-voto-para-deputado-federal-no-df" target="_blank" rel="noopener">Igape/Record, deputado federal (22–26/09, DF-00171/2026) – Metrópoles</a></li>
+      <li><a href="https://www.metropoles.com/colunas/grande-angular/igape-record-veja-intencao-de-voto-para-deputado-distrital" target="_blank" rel="noopener">Igape/Record, deputado distrital (22–26/09, DF-00171/2026) – Metrópoles</a></li>
+      <li><a href="https://www.metropoles.com/colunas/grande-angular/quaest-michelle-leila-bia-e-erika-tem-26-20-18-e-16-para-senado" target="_blank" rel="noopener">Quaest, Senado (25–28/09, DF-02515/2026) – Metrópoles</a></li>
+      <li><a href="https://www.cartacapital.com.br/politica/michelle-lidera-disputa-ao-senado-no-df-aponta-real-time-big-data/" target="_blank" rel="noopener">Real Time Big Data, Senado (24–28/09, DF-04637/2026) – CartaCapital</a></li>
+      <li><a href="https://ncnews.com.br/2026/09/29/pesquisa-real-time-governador-df/" target="_blank" rel="noopener">Real Time Big Data, governador (24–28/09, DF-04637/2026) – NC News</a></li>
+      <li><a href="https://jornaldebrasilia.com.br/brasilia/igape-celina-dispara-e-chega-a-439-na-corrida-pelo-gdf/" target="_blank" rel="noopener">Igape/Record, governador (22–26/09, DF-00171/2026) – Jornal de Brasília</a></li>
+      <li><a href="https://www.cnnbrasil.com.br/eleicoes/datafolha-no-1o-turno-lula-tem-38-flavio-33-e-cury-8/" target="_blank" rel="noopener">Datafolha, presidente (01–03/09, BR-03669/2026) – CNN Brasil</a></li>
+      <li><a href="https://www.tse.jus.br/partidos/partidos-registrados-no-tse" target="_blank" rel="noopener">Partidos registrados no TSE</a></li>
+    </ul>
+    <footer>Posição dos partidos no espectro é aproximada. Dados levantados em 02/10/2026.</footer>
+  </section>
+</div>
+
+<button class="to-top" id="to-top" type="button" aria-label="Voltar ao topo">↑</button>
+<script>
+const COR={PCO:'--c-xe',PSTU:'--c-xe',PCB:'--c-xe',UP:'--c-xe',PSOL:'--c-e',PCdoB:'--c-e',PT:'--c-e',REDE:'--c-e',PSB:'--c-ce',PDT:'--c-ce',PV:'--c-ce',CIDADANIA:'--c-c',PSDB:'--c-c',SOLIDARIEDADE:'--c-c',MDB:'--c-c',PSD:'--c-c',AVANTE:'--c-c',MOBILIZA:'--c-cd',AGIR:'--c-cd','O DEMOCRATA':'--c-cd',PRD:'--c-cd',PODE:'--c-cd','UNIÃO':'--c-cd',PP:'--c-cd',REPUBLICANOS:'--c-cd',DC:'--c-cd',NOVO:'--c-d','MISSÃO':'--c-d',PRTB:'--c-d',PL:'--c-d'};
+const badge=p=>`<span class="b" style="background:var(${COR[p]||'--muted'})">${p}</span>`;
+
+const LEG=[
+ ['Extrema esquerda','--c-xe',[[29,'PCO','Partido da Causa Operária'],[16,'PSTU','Partido Socialista dos Trabalhadores Unificado'],[21,'PCB','Partido Comunista Brasileiro'],[80,'UP','Unidade Popular']]],
+ ['Esquerda','--c-e',[[50,'PSOL','Partido Socialismo e Liberdade'],[65,'PCdoB','Partido Comunista do Brasil'],[13,'PT','Partido dos Trabalhadores'],[18,'REDE','Rede Sustentabilidade']]],
+ ['Centro-esquerda','--c-ce',[[40,'PSB','Partido Socialista Brasileiro'],[12,'PDT','Partido Democrático Trabalhista'],[43,'PV','Partido Verde']]],
+ ['Centro','--c-c',[[23,'Cidadania','Cidadania (ex-PPS)'],[45,'PSDB','Partido da Social Democracia Brasileira'],[77,'Solidariedade','Solidariedade'],[15,'MDB','Movimento Democrático Brasileiro'],[55,'PSD','Partido Social Democrático'],[70,'Avante','Avante (ex-PTdoB)']]],
+ ['Centro-direita','--c-cd',[[33,'Mobiliza','Mobilização Nacional (ex-PMN)'],[36,'Agir','Agir (ex-PTC)'],[35,'O Democrata','O Democrata'],[25,'PRD','Partido Renovação Democrática'],[20,'PODE','Podemos'],[44,'UNIÃO','União Brasil'],[11,'PP','Progressistas'],[10,'Republicanos','Republicanos'],[27,'DC','Democracia Cristã']]],
+ ['Direita / extrema direita','--c-d',[[30,'NOVO','Partido Novo'],[14,'MISSÃO','Partido Missão'],[28,'PRTB','Partido Renovador Trabalhista Brasileiro'],[22,'PL','Partido Liberal']]]
+];
+document.getElementById('legenda').innerHTML=LEG.map(([t,c,ps])=>`<div class="band" style="--c:var(${c})"><div class="bh">${t}</div><div class="pgrid">${ps.map(([n,s,nm])=>`<div class="pcard"><div class="pnum">${n}</div><div style="min-width:0"><div class="psg">${s}</div><div class="pnm">${nm}</div></div></div>`).join('')}</div></div>`).join('');
+
+/* Parser: linhas "Nome|PARTIDO|num|pct1;pct2|S" */
+const det=document.querySelector('.leg-det');det.addEventListener('toggle',()=>{det.querySelector('summary').textContent=det.open?'Ocultar partidos':'Ver a posição de cada partido'});
+const parse=(txt)=>txt.trim().split('\n').map(l=>{const [n,p,num,v='',e='']=l.split('|');return{n,p,num,v:v?v.split(';'):[],e:e==='S'}});
+
+const FED_P=`Rafael Prudente|MDB|1515|5,7%|S
+Julio Cesar|REPUBLICANOS|1010|5,6%|S
+Fábio Felix|PSOL|5050|5,5%|
+Fred Linhares|REPUBLICANOS|1020|5,5%|S
+Rollemberg|PSB|4040|4,3%|
+Gilvan Patrulha do Consumidor|REPUBLICANOS|1011|4,2%|S
+Alberto Fraga|PL|2222|3,3%|S
+Zé Humberto|MDB|1555|3,3%|
+Agnelo Queiroz|PT|1310|3,0%|
+Cris Britto|REPUBLICANOS|1022|2,5%|
+Prof. Reginaldo Veras|PV|4343|2,2%|S
+Sandro Avelar|UNIÃO|4444|2,0%|
+Carlos Dalvan|UNIÃO|4411|1,9%|
+Izalci Lucas|PL|2200|1,8%|
+Professor Israel|PSB|4004|1,6%|
+Daniel Donizet|MDB|1500|1,5%|
+Thiago Manzoni|PL|2233|1,4%|
+Glaucia do Arruda|AVANTE|7055|1,3%|
+Agaciel Maia|PL|2220|0,9%|
+Cristovam Buarque|PSB|4023|0,9%|
+França|PODE|2020|0,9%|
+Paulo Sá|AVANTE|7088|0,9%|
+Mariana Naime|PL|2201|0,6%|
+Ruth Venceremos|PT|1361|0,6%|
+Carlos Macedo|PODE|2022|0,5%|
+Carol Fleury|PSD|5555|0,4%|
+Policarpo|PT|1313|0,4%|
+Washington Coração Valente|MDB|1599|0,4%|
+Adila Maria|PSD|5500|0,3%|
+Camila Corrêa|MISSÃO|1441|0,3%|
+Capitão Davi|PL|2238|0,3%|
+Coronel Moreno|PP|1190|0,3%|
+Cris Caiado|MISSÃO|1400|0,3%|
+Hélvia Paranaguá|MDB|1522|0,3%|
+Oscar Silva|PSDB|4555|0,3%|`;
+const FED_Z=`Abadia|PSD|5566
+Adriano Amaral|PSD|5522
+Adriano Animal|DC|2727
+Adriano Fiúza|PSOL|5001
+Aguida Maria|PCO|2900
+Ale Chianelli|NOVO|3022
+Alvaro Mozini|MISSÃO|1411
+Ana Ferola|AVANTE|7052
+Ana Schramm|PCO|2999
+Antonio Siriano|MOBILIZA|3300
+Carine Teixeira|NOVO|3030
+Carla Gehlen|PSB|4007
+Carlos Vinícius|PCO|2929
+Carol Furlan|REPUBLICANOS|1086
+Carol Ribeiro|PODE|2088
+Cida Villas Bôas|NOVO|3036
+Coronel Aviador Luiz Gama|NOVO|3001
+Costa Neto|MDB|1516
+Dani Freitas|PSB|4008
+Dani Solta O Verbo|PSB|4022
+Defensor Celestino|REPUBLICANOS|1050
+Delegado Nugoli|PSD|5551
+Diego Costa|SOLIDARIEDADE|7707
+Dr. Carlos|AVANTE|7000
+Dr. João Luiz|PSD|5544
+Dra. Gardenia|UNIÃO|4456
+Dra. Marina Noronha|PP|1117
+Dra Raquel Ferreira|PSOL|5040
+Durval|UP|8080
+Edilson Pardals|DC|2789
+Elianildo Nascimento|REDE|1818
+Elizeu Costa do Uber|DC|2700
+Emilio Kerber|NOVO|3010
+Enfermeira Karine|PSOL|5080
+Ester Carvalho|UNIÃO|4455
+Felipe Rodrigues|PSDB|4522
+Flávia Portela|PSDB|4567
+Flavio Fleury|NOVO|3004
+Flavio Werneck|PDT|1212
+Gabriel Portella|SOLIDARIEDADE|7733
+Garcia do Povo|MOBILIZA|3310
+Gerciane|SOLIDARIEDADE|7777
+Gilson Amorim|PRD|2522
+Gordinho da Farmácia|PODE|2033
+Guilherme Jaganu|REDE|1819
+Iara Nardia|O DEMOCRATA|3522
+Isanil|PDT|1216
+Isaura Barbosa|MOBILIZA|3332
+Ismael Almeida|PODE|2000
+Ivone Lopes|DC|2777
+Jair Marinho|SOLIDARIEDADE|7722
+Jean Victor|AVANTE|7007
+Jô Abreu|PDT|1221
+Joel Matos Defensor Ambiental|MOBILIZA|3355
+Josy Jacob|MDB|1551
+Ju dos Tigrados|PV|4300
+Júlio Isidro|PSD|5577
+Juscelino Kubitschek|AVANTE|7077
+Karla Vinhas|PSDB|4500
+Larissa Schmidt|PDT|1270
+Leandro Barroso|MOBILIZA|3396
+Leia Xavier|PSDB|4566
+Leonardo Bear|DC|2712
+Leticia Leal|SOLIDARIEDADE|7710
+Liza Lopes|REPUBLICANOS|1001
+Lucas Brasileiro|MISSÃO|1444
+Ludmila Suaid|PSOL|5005
+Luiz Eduardo|REPUBLICANOS|1000
+Marcos Wesley|PP|1177
+Márcia Abrahão|PT|1331
+Maria Amélia|PL|2223
+Maria Cleudes|REDE|1801
+Mariana de Paula|CIDADANIA|2311
+Marivaldo Pereira|PT|1300
+Marta Lima|MISSÃO|1456
+Mauro Lopes|MOBILIZA|3390
+Max Ferramentas|SOLIDARIEDADE|7778
+Mayara Noronha|PODE|2027
+Milena do MLB|UP|8000
+Milena Sousa|DC|2770
+Moacir Coletivo Trabalhista|PDT|1233
+Nana|NOVO|3033
+Neiva Lopes|PSOL|5000
+Noely Coletivo Coragem|O DEMOCRATA|3535
+Pablo Valente|PRD|2525
+Pamela Águia|MDB|1505
+Pastor Ismael Lopes|PDT|1213
+Pastor Lima Neto|O DEMOCRATA|3590
+Pastora Ana Lima|AVANTE|7033
+Paulo Echebarria|NOVO|3012
+Paulo Tavares|PDT|1214
+Professor Anthony Couto|O DEMOCRATA|3500
+Professor Francelino|UNIÃO|4400
+Professor Gadelha|PSB|4080
+Professor Léo Matos|PSDB|4545
+Professor Rafael Parente|PDT|1234
+Professora Juliana Alves|MOBILIZA|3344
+Profa. Fátima Sousa|PDT|1230
+Raposão DS|MOBILIZA|3322
+Raquel Medeiros|PSB|4000
+Ravan Leão|REPUBLICANOS|1015
+Reis Coletivo Segurança Privada|O DEMOCRATA|3577
+Renato Machado|DC|2733
+Richard Banhara|O DEMOCRATA|3510
+Rita Ballock|MOBILIZA|3333
+Roberto Freire|CIDADANIA|2323
+Rodolpho Hoth Hoth|AVANTE|7070
+Rogério Arapoanga|AVANTE|7022
+Rosilene Corrêa|PT|1333
+Salve Jorge|PODE|2026
+Sanchez|O DEMOCRATA|3550
+Sandra Faraj|PL|2277
+Sargento Eliomar|PSD|5545
+Sargento Maurício Pardal|PODE|2030
+Serralheiro Rono Pinheiro|DC|2755
+Silva Fotografo - O Corno|AGIR|3636
+Socorro Martins|DC|2750
+Stephanie Alves|O DEMOCRATA|3525
+Subtenente Cintya|PRD|2523
+Subtenente Vera|PODE|2090
+Tia Nega|AGIR|3600
+Ulissis Lima|PL|2211
+Valdirene Tavares|PP|1111
+Vanessa É O Bicho|PT|1324
+Victor Rattes|MISSÃO|1414
+Wender|PSB|4061
+Wesley Amaral|MDB|1501
+Wilker Leão|NOVO|3000`;
+
+const DIS_P=`Joaquim Roriz Neto|PL|22000|4,0%|S
+Chico Vigilante|PT|13100|3,3%|S
+Jaqueline Silva|MDB|15900|3,3%|S
+Wellington Luiz|MDB|15123|3,2%|S
+Martins Machado|REPUBLICANOS|10123|3,1%|S
+Pastor Daniel de Castro|PP|11133|2,9%|S
+Renata Daguiar|REPUBLICANOS|10789|2,9%|
+André Kubitschek|PL|22022|2,8%|
+Delegado Fernando Fernandes|REPUBLICANOS|10190|2,8%|
+Max Maciel|PSOL|50100|2,7%|S
+Eduardo Pedrosa|UNIÃO|44000|2,4%|S
+Pepa|PP|11011|2,4%|S
+Claudio Abrantes|UNIÃO|44123|2,3%|
+Delmasso|REPUBLICANOS|10456|2,1%|
+Robério Negreiros|PODE|20000|1,8%|S
+Bispo Renato Andrade|REPUBLICANOS|10100|1,6%|
+Hermeto|MDB|15190|1,6%|S
+Iolando|MDB|15000|1,6%|S
+Rôney Nemer|PP|11111|1,6%|
+Ricardo Vale|PT|13013|1,4%|S
+Raad|MOBILIZA|33100|1,3%|
+Jorge Vianna|O DEMOCRATA|35192|1,2%|S
+Marcela Passamani|MDB|15555|1,1%|
+Rogério Morro da Cruz|PSD|55123|1,1%|S
+Giulianno Cartaxo|REPUBLICANOS|10020|0,9%|
+Rogério Ulysses|AVANTE|70321|0,9%|
+Cristiano Araújo|MDB|15015|0,7%|
+João Cardoso|PL|22888|0,7%|S
+Delegado Pablo Aguiar|PSD|55000|0,6%|
+Hamilton Tatu|PL|22555|0,6%|
+Roosevelt Vilela|PL|22193|0,6%|S
+Estefane Sampaio|REPUBLICANOS|10222|0,5%|
+Gabriel Magno|PT|13131|0,5%|S
+Jorge Farias Rodoviário|MOBILIZA|33111|0,5%|
+Victor Jansen|PL|22322|0,5%|
+Alessandro Paiva|PL|22123|0,4%|
+Berê Darc|PCdoB|65180|0,4%|
+Carlão Reclamão|O DEMOCRATA|35180|0,4%|
+Cláudia Lapa|PODE|20111|0,4%|
+Daniel Radar|AVANTE|70000|0,4%|
+Delegada Doutora Jane|REPUBLICANOS|10555|0,4%|S
+Dr. Lucimir|O DEMOCRATA|35355|0,4%|
+Léo Goleiro|PP|11010|0,4%|
+Professora Jéssica Motta|PSB|40140|0,4%|
+Silene da Saúde|AVANTE|70111|0,4%|
+Suzele Veloso|PODE|20200|0,4%|
+Carlos Penna|PSDB|45000|0,3%|
+Crícia Cantora de Pentecostes|MOBILIZA|33777|0,3%|
+Daiane dos Santos|NOVO|30500|0,3%|
+Delegada Karen|UNIÃO|44180|0,3%|
+Delegado Laércio|AVANTE|70255|0,3%|
+Elke Pimentel|PV|43123|0,3%|
+Evaldo Lobato|AVANTE|70555|0,3%|
+Fernando Caixeta|PL|22321|0,3%|
+Gustavo Aires|MDB|15133|0,3%|
+Jabá Arruda|PSD|55190|0,3%|
+Keka Bagno|PSOL|50123|0,3%|
+Luíza do Clezão|PL|22822|0,3%|
+Professor Jordenes|PSD|55555|0,3%|
+Silvinho Almeida|UNIÃO|44567|0,3%|
+Virgílio Neto|PP|11122|0,3%|`;
+const DIS_Z=`Abel Santos|PSOL|50444
+Adalberto Carvalho|PSDB|45190
+Aderval|SOLIDARIEDADE|77123
+Ágatha Lopes|DC|27111
+Agenildo Neri|MOBILIZA|33733
+Ailude Máximo|NOVO|30777
+Akilla Marinho|PSD|55033
+Alcivânio Bomfim|O DEMOCRATA|35100
+Alessandro Cardoso|PSD|55055
+Alessandro Mito|PODE|20022
+Alex Galvão|PODE|20100
+Alex Oliveira|NOVO|30456
+Alexa|NOVO|30230
+Alexandre Oliver|DC|27222
+Aline Sá|PDT|12777
+Aline Vesely|PSD|55575
+Amanda Camargo|MISSÃO|14714
+Ana Maria|PP|11022
+Ana Paula Marra|PODE|20123
+Anderson Guiné|AVANTE|70777
+Anderson Vieira|PSDB|45200
+André Pilla|PRD|25190
+André Pires|PDT|12110
+Andrea Espanha|REPUBLICANOS|10110
+Ândrea Estevam|MDB|15222
+Andreia Bombom|O DEMOCRATA|35017
+Andréia Moura|PL|22333
+Andreia Salles|PSD|55200
+Andrey Lemos|PT|13012
+Angelica|AVANTE|70022
+Angelina Nardelli|REDE|18018
+Anna Sebba|PL|22061
+Anthony Ribas|MISSÃO|14321
+Arcanjo Magalhães|O DEMOCRATA|35111
+Arilson de Oliveira|PDT|12333
+Arthur Gurgel|MISSÃO|14014
+Artur Cezar|PODE|20001
+Bárbara Calista|UP|80110
+Bartiria Coletivo Nossa Gente|REDE|18123
+Bartolomeu Bartô Rodrigues|PSB|40023
+Bebeto|MOBILIZA|33033
+Bernardo Moreira|PSB|40100
+Bethania Kelly|SOLIDARIEDADE|77000
+Betinho Guariroba|REDE|18180
+Bispo Weldon|DC|27012
+Bito Ramos|DC|27391
+Brunelli|PRD|25444
+Cabo Vitorio|AVANTE|70190
+Caçuleci Pacheco|NOVO|30700
+Caiafa|DC|27027
+Camargo Minha Capital|MOBILIZA|33333
+Capitão Aderivaldo Cardoso|PODE|20333
+Carlos Sá|PSD|55333
+Carlos Xavier|DC|27127
+Carol Força da Mulher|MOBILIZA|33003
+Carol Kalil|PL|22122
+Carvalho Rio Melchior|PSDB|45888
+Castelo|PRD|25555
+Christian Rodrigues Sena|UP|80123
+Claudeci Luart|DC|27321
+Cláudio Borcem|PODE|20061
+Cláudio Ferreira Domingues|O DEMOCRATA|35456
+Clea Torres|PSDB|45155
+Cleber DF Aguasclaras|PSD|55888
+Cleia Araújo|MOBILIZA|33337
+Cleidiane Vitalino|PODE|20456
+Clemilton|AVANTE|70456
+Comandante Alan|PODE|20193
+Conceição da Agricultura|PSOL|50257
+Conceição do Maranhão|MDB|15888
+Conde|REPUBLICANOS|10101
+Coronel Michello|PODE|20122
+Coronel Neviton Sangue Bom|DC|27190
+Corretor Nogueira|MOBILIZA|33007
+Cris Mourão|NOVO|30303
+Cris Nardes|REPUBLICANOS|10987
+Cristiane Carvalho|SOLIDARIEDADE|77810
+Cristiano Severo|UNIÃO|44070
+Daniel Barros|PT|13197
+Daniela Ciriaco|PSDB|45555
+Dataniel Duarte|PSDB|45045
+Dayse Amarilio|PSB|40222||S
+Dayse Hansa|PT|13056
+Defensor Kleber|NOVO|30030
+Deise Andrade|MOBILIZA|33180
+Delegado Jonatas|MDB|15777
+Denise Franco|REPUBLICANOS|10888
+Dennis Web|PSB|40567
+Deo do Mandala|PODE|20002
+Deusdete Filho|SOLIDARIEDADE|77111
+Dhiogo Bacurau|PDT|12344
+Diego Locutor|SOLIDARIEDADE|77077
+Diógenes Bastos|REPUBLICANOS|10111
+Diolan Rocha|O DEMOCRATA|35353
+Donny Silva|DC|27022
+Dr Caio Gracco|AVANTE|70999
+Dr Jacinto|NOVO|30007
+Dr Wendel Moreira|MOBILIZA|33192
+Dr. Candido Teles|MDB|15678
+Dr. Eric Gustavo|NOVO|30022
+Dr. Gutemberg|DC|27123
+Dr. Helio Gomes|AVANTE|70122
+Dr. Klebes Rezende|PODE|20033
+Dr. Petrus|NOVO|30111
+Dr. Vicenzo|PSD|55678
+Drª Carolina Maia|MISSÃO|14100
+Dra Cris|PL|22221
+Dra Suzana Lima|UNIÃO|44101
+Dra. Angélica Caraíba|O DEMOCRATA|35678
+Dra. Atena Oliveira|NOVO|30026
+Dra. Fabi|UNIÃO|44222
+Dra. Kellen Guerra|PL|22010
+Dra. Lucilene Fernandes|PSDB|45755
+Dra. Mônica|O DEMOCRATA|35888
+Dra. Natália Matias|PSOL|50500
+Dra. Tânia Soster|NOVO|30555
+Edem Alexandre|SOLIDARIEDADE|77777
+Edison Ceilândia|PSOL|50133
+Edson Cordeiro|SOLIDARIEDADE|77222
+Edson Sol Nascente|MDB|15551
+Edu Santos|MISSÃO|14123
+Eduardo Brandão|PV|43000
+Eduardo Torres|PL|22222
+Eliana Emerick|PODE|20555
+Eliana Veterinária|REDE|18486
+Elias Santos|O DEMOCRATA|35800
+Elisson Franklin|DC|27024
+Elizeu Síndico|O DEMOCRATA|35250
+Emanuel S.O.S|REPUBLICANOS|10505
+Emanuell Resolve|MOBILIZA|33088
+Emanuelle|MISSÃO|14149
+Enfermeira Lidia|PSD|55655
+Engenheiro Valter Saboia|NOVO|30300
+Ericka Filippelli|NOVO|30100
+Ericson Gomes|REPUBLICANOS|10193
+Erivelton|PSD|55444
+Esteffany|O DEMOCRATA|35333
+Eugênio Magalhães|SOLIDARIEDADE|77023
+Evandro Araujo|PL|22522
+Fabiano Trompetista|PT|13007
+Fabio de Morais|SOLIDARIEDADE|77007
+Fatima Có|PSD|55500
+Fátima Rôla|PT|13321
+Fernanda França|NOVO|30530
+Fernanda Mateus|MDB|15156
+Fernando do Resgate|DC|27777
+Fernando Freitas|PSB|40123
+Flavinha Ceilandia|SOLIDARIEDADE|77122
+Flavio Potiguar|AVANTE|70369
+Francimar Nava|MOBILIZA|33323
+Francisca Côrte|PDT|12122
+Gabriel Luna|PSDB|45345
+Gabriela Freire|AVANTE|70100
+Gaby|PDT|12321
+Gigante da Federal|PRD|25123
+Gilberto Eliazario de Camargos|AVANTE|70333
+Giza Tea|MOBILIZA|33133
+Glória Vale|PSDB|45456
+Guarda Janio|O DEMOCRATA|35000
+Guilherme Carvalho Emanar|PSB|40800
+Gutemberg Rios|MOBILIZA|33700
+Helvídio Nunes|PRD|25001
+Henrique Durães|MISSÃO|14141
+Igor Saraiva|O DEMOCRATA|35444
+Ilene Almeida|PRD|25025
+Inês Armand|DC|27272
+Ipaminona dos Inquilinos|SOLIDARIEDADE|77200
+Iracema Durão|PRD|25500
+Isa Lustosa|O DEMOCRATA|35007
+Israel Presença|PP|11123
+Issa|AVANTE|70007
+Italo Miranda|MOBILIZA|33456
+Iuri Marques|PP|11410
+Izadora Coimbra|PSD|55026
+Izaquiel Souza|DC|27700
+Jacy Afonso|PT|13001
+Jadiel da Construção|PSD|55255
+Jair dos Aplicativos|PDT|12112
+James Mayner|PSDB|45678
+Japa da Bike|O DEMOCRATA|35777
+Jean da Cultura|PV|43222
+Jézer Júnior|NOVO|30061
+Jô Assistente Social|MDB|15444
+João Alexandre|PL|22224
+João Dito|DC|27500
+João Favorito|PT|13061
+João Terra|PSDB|45300
+Joe Valle da Malunga|PDT|12345
+Jonathan Araújo|PSD|55661
+Joseflay Josias|PDT|12022
+Jovita Rosa|PDT|12000
+Julia Lucy|PL|22190
+Juliana Cândida|PSDB|45100
+Kevin Vem|O DEMOCRATA|35222
+Lací Marinho|UNIÃO|44197
+Lau de Paula|AVANTE|70700
+Laureano de Faria|PT|13193
+Lauricio Radiosaude|AVANTE|70234
+Lenne Evangelista|PSB|40044
+Léo Rezende|PSD|55321
+Letícia Sampaio|MOBILIZA|33122
+LGM|NOVO|30000
+Lorruana Medeiros|DC|27100
+Lúcia Carvalho|PT|13111
+Lúcia Lucimar|PDT|12369
+Luciana Lima|PSDB|45123
+Luciana Mendina|NOVO|30321
+Luciene Daniel da Segurança|SOLIDARIEDADE|77190
+Lucijaine Vilar|UNIÃO|44007
+Luís Miranda|O DEMOCRATA|35555
+Lyly do Avante|AVANTE|70707
+Madu K|PSOL|50700
+Maggie Margarida Chaulet|DC|27333
+Mano Lima|PSOL|50060
+Manuela Andrade|PODE|20101
+Mara Marçal|PDT|12126
+Marcel Uber Black|O DEMOCRATA|35035
+Marcele Mama|AVANTE|70789
+Marcelinho Carioca|REPUBLICANOS|10777
+Marcelinho Nunes|PP|11777
+Marcelo Izidoro|PL|22777
+Marcelo Trator|REPUBLICANOS|10000
+Marcos Marshal|MDB|15151
+Marcos Porto|REPUBLICANOS|10722
+Mari Jow|PSB|40233
+Mari Teixeira|AVANTE|70870
+Maria Duclerio|PSDB|45130
+Maria Jose|PSDB|45525
+Mariana Rosa|PT|13333
+Marlene|SOLIDARIEDADE|77137
+Marquim do Tropa|PDT|12071
+Martha Eliene|PP|11112
+Matheus Fernandes|NOVO|30033
+Matheus Marques|MISSÃO|14114
+MC Jenny|REPUBLICANOS|10010
+Mercione|PDT|12061
+Michel Platini|PSOL|50000
+Miguel da 26|REPUBLICANOS|10026
+Miranda Gomes|REDE|18081
+Missionária Eudes|MOBILIZA|33000
+Moustafa|PSOL|50511
+Múcio|PSB|40061
+Nanda Batista|O DEMOCRATA|35500
+Natal Furucho|PODE|20777
+Natália Reis|PP|11211
+Natanry Osorio|PSDB|45617
+Natty Vieira|PSOL|50180
+Nay do Acarajé|PSB|40333
+Nelson Neto|PSD|55155
+Nery Charlie|SOLIDARIEDADE|77135
+Neto Rodrigues|PODE|20020
+Newton dos Esportes|SOLIDARIEDADE|77321
+Noemia T Bispo|NOVO|30888
+Orion Oliveira|SOLIDARIEDADE|77843
+Pablo Feitosa|PSB|40420
+Pardim|PT|13405
+Pastor Anderson Silva|PSD|55111
+Pastor Dácio Cordeiro|MDB|15153
+Pastor Leiber|UNIÃO|44190
+Pastor Rafael|DC|27000
+Pastor Roberto|SOLIDARIEDADE|77277
+Pastora Allana|O DEMOCRATA|35999
+Pastora Luzinete|PT|13556
+Pastora Márcia|REPUBLICANOS|10060
+Patricia da Feira|AVANTE|70077
+Patrícia Helena|PODE|20028
+Patty Ramiro|PSOL|50050
+Paulinho Campello|PDT|12105
+Paulo César (PC)|PSOL|50321
+Paulo Mineiro|NOVO|30123
+Pedro do Ovo|UNIÃO|44044
+Pedro Mecânico Coletivo|MOBILIZA|33789
+Pedro Oliveira|UNIÃO|44555
+Pedro Payne|NOVO|30444
+Perita Tirotti|MISSÃO|14444
+Pikineia|PSOL|50200
+Pinho|REPUBLICANOS|10022
+Policial João Renato|PL|22422
+Pr. João de Deus|PODE|20700
+Pr. Sidney|PDT|12101
+Preta Praiana|O DEMOCRATA|35135
+Priscila Baccile|PODE|20088
+Prof Wesley|AVANTE|70222
+Prof. Cristiano Luz|PDT|12012
+Prof. Nilvan de Vasconcellos|PDT|12456
+Profª Altaci Kokama|PT|13133
+Profa. Keila Sanches|PT|13613
+Professor Aharom|PSB|40120
+Professor Álvaro Domingues|NOVO|30999
+Professor Diego Gomes|PSDB|45145
+Professor Douglas Gomes/o Divo|PSB|40109
+Professor Elias|PCdoB|65123
+Professor Fernando Moura|PDT|12123
+Professor Fernando Sousa|PDT|12361
+Professor Gustavo Salles|PSDB|45013
+Professor Ivan Moraes|PSD|55777
+Professor Jairon|PDT|12555
+Professor Willian Comunidade|DC|27277
+Professora Godoi|PSDB|45321
+Professora Ray|PSOL|50020
+Rachel Doces|DC|27999
+Raphael Sebba|PSB|40200
+Regis Machado|NOVO|30333
+Reinaldo Araujo|DC|27300
+Rejane Costa|PP|11001
+Renato Silveira Barbosa|AVANTE|70193
+Rhailler Santos|MISSÃO|14040
+Ricardo Castanheira|PL|22002
+Ricardo Castro|NOVO|30222
+Robério Melo TX|O DEMOCRATA|35123
+Rodrigo Dantas|PL|22100
+Rodrigo Dias|PSB|40400
+Romário Leal|PSOL|50777
+Rosi Costa|PT|13000
+Salvador Castro|O DEMOCRATA|35026
+Samara Brito|MDB|15100
+Sami Yassine|REDE|18222
+Samuel Gaúcho|PL|22722
+Sandra Bacelar|PSD|55100
+Sandra Silva|AVANTE|70770
+Sandro Bilks|PSD|55533
+Saphira|PSDB|45777
+Sardinha|MOBILIZA|33123
+Sargento Elizalda|SOLIDARIEDADE|77330
+Sargento Paulo Roberto|PODE|20226
+Scooby Ube|REPUBLICANOS|10061
+Sgt Roksinaidy|MOBILIZA|33001
+Sgt. Luciano Baglogui|PODE|20090
+Simone Magalhães|PSD|55855
+Soraya Costa|PSDB|45451
+Sorriso|PDT|12307
+Subtenente Geraldo Alves|PODE|20190
+Sueli Líder Guerreira|PDT|12331
+Tabanez|MOBILIZA|33222
+Taniel Macedo|MISSÃO|14777
+Telma Rufino|PODE|20222
+Thays Mãe do Gabriel|MOBILIZA|33663
+Tia Lu|DC|27727
+Tia Maria|DC|27555
+Tomaz|PSD|55222
+Ulisses Dias|MOBILIZA|33190
+Valdecy Líder Comunitário|PSDB|45163
+Valdelino Barcelos|PP|11234
+Weila Almeida|PDT|12222
+Wellington Campos|MISSÃO|14001
+Wellington Mega|DC|27888
+Wilson Amigão|AVANTE|70123
+Xandão do Povão|MOBILIZA|33355
+Xandão Leleco|PL|22478
+Yuri Kaioli|MISSÃO|14000
+Zaqueu Engraxate|PDT|12300
+Zé Alencar|MDB|15166
+Zé do Coco|PT|13123
+Zuleika do Blog|DC|27234`;
+
+const SEN=`Michelle Bolsonaro|PL|222|26%;27%
+Leila do Vôlei|PDT|123|20%;18%
+Bia Kicis|PL|223|18%;18%
+Erika Kokay|PT|131|16%;16%
+Sebastião Coelho|NOVO|300|1%;11%
+Professor Guilherme Amorim|UP|800|1%;—
+Zanata|PSTU|161|1%;—
+Guto Felício dos Santos|PSDB|456|0%;1%
+David Horn|PCO|290|0%;—
+Marley|AVANTE|700|0%;—
+Tiago|AGIR|360|0%;—`;
+
+const GOV=`Celina Leão|PP|11|47%;43,9%
+Leandro Grass|PT|13|26%;17,3%
+Paula Belmonte|PSDB|45|10%;5,9%
+Cappelli|PSB|40|4%;4,3%
+Kiko Caputo|NOVO|30|1%;3,2%
+Elisson|AGIR|36|≤2%*;<2%
+Expedito Mendonça|PCO|29|≤2%*;<2%
+Professor Robson|PSTU|16|≤2%*;<2%
+Professora Samara Mineiro|UP|80|≤2%*;<2%
+Rico Pinheiro|PRTB|28|≤2%*;<2%`;
+
+const PRE=`Lula|PT|13|38%|S
+Flávio Bolsonaro|PL|22|33%|
+Escritor Augusto Cury|AVANTE|70|8%|
+Ronaldo Caiado|PSD|55|4%|
+Renan Santos|MISSÃO|14|3%|
+Zema|NOVO|30|2%|
+Samara|UP|80|1%|
+Edmilson Costa|PCB|21|1%|
+Rui Costa Pimenta|PCO|29|1%|
+Veterinário Wilson Grassi|O DEMOCRATA|35|0%|
+Clariana Barão|DC|27|0%|
+Hertz Dias|PSTU|16|0%|
+Leonardo Avalanche|PRTB|28|não testado|`;
+
+const CARGOS=[
+ {id:'federal',nome:'Deputado Federal',curto:'Dep. Federal',dig:4,polls:['Igape/Record<small>22–26/09</small>'],eleito:true,top:parse(FED_P),rest:parse(FED_Z).map(r=>({...r,v:['0,0%']})),extra:[],nota:'163 candidatos aptos · 8 vagas'},
+ {id:'distrital',nome:'Deputado Distrital',curto:'Dep. Distrital',dig:5,polls:['Igape/Record<small>22–26/09</small>'],eleito:true,top:parse(DIS_P),rest:parse(DIS_Z).map(r=>({...r,v:['0,0%']})),extra:[],nota:'415 candidatos aptos · 24 vagas'},
+ {id:'senador',nome:'Senador',dig:3,dupla:true,polls:['Quaest<small>25–28/09</small>','Real Time Big Data<small>24–28/09</small>'],eleito:false,top:parse(SEN),rest:[],extra:[['Brancos/nulos','10%','4%'],['Indecisos','6%','4%']],nota:'11 candidatos aptos · 2 vagas, dois votos diferentes'},
+ {id:'governador',nome:'Governador',dig:2,polls:['Real Time Big Data<small>24–28/09</small>','Igape/Record<small>22–26/09</small>'],eleito:false,top:parse(GOV),rest:[],extra:[['Brancos/nulos','5%','2,9%'],['Indecisos','5%','10,5%']],nota:'10 candidatos aptos · * os cinco somam 2% na Real Time Big Data'},
+ {id:'presidente',nome:'Presidente',dig:2,polls:['Datafolha<small>01–03/09</small>'],eleito:true,top:parse(PRE),rest:[],extra:[['Brancos/nulos','6%'],['Indecisos','3%']],nota:'13 candidatos aptos'}
+];
+
+/* Colinha */
+const ORDEM=[['federal','Deputado Federal'],['distrital','Deputado Distrital'],['senador','Senador · 1ª vaga'],['senador','Senador · 2ª vaga'],['governador','Governador'],['presidente','Presidente']];
+const byId=Object.fromEntries(CARGOS.map(c=>[c.id,c]));
+const allOf=id=>[...byId[id].top,...byId[id].rest];
+const store={get(){try{return JSON.parse(localStorage.getItem('colinha-df-2026')||'{}')}catch(e){return{}}},set(v){try{localStorage.setItem('colinha-df-2026',JSON.stringify(v))}catch(e){}}};
+const saved=store.get();
+const slotsEl=document.getElementById('slots');
+slotsEl.innerHTML=ORDEM.map(([id,label],i)=>{const d=byId[id].dig;return `<div class="slot"><span class="ord">${i+1}</span><div class="slot-info"><span class="slot-name">${label}</span><span class="slot-res" id="res${i}"></span></div><div class="digits" data-i="${i}">${Array.from({length:d},(_,k)=>`<input id="d${i}_${k}" inputmode="numeric" maxlength="1" aria-label="${label}, dígito ${k+1}" autocomplete="off">`).join('')}</div></div>`}).join('');
+function lookup(i){
+  const [id]=ORDEM[i];const ins=[...slotsEl.querySelectorAll(`.digits[data-i="${i}"] input`)];
+  const val=ins.map(x=>x.value).join('');
+  if(!val)return{val,state:'vazio'};
+  if(val.length<ins.length)return{val,state:'incompleto'};
+  const c=allOf(id).find(r=>r.num===val);
+  if(!c)return{val,state:'nulo'};
+  if(id==='senador'){const o=i===2?3:2;const ov=[...slotsEl.querySelectorAll(`.digits[data-i="${o}"] input`)].map(x=>x.value).join('');if(ov===val&&i===3)return{val,state:'repetido',c}}
+  return{val,state:'ok',c};
+}
+function check(i){
+  const res=document.getElementById('res'+i);res.classList.remove('err');
+  const s=store.get();const L=lookup(i);s[i]=L.val;store.set(s);
+  if(L.state==='vazio'||L.state==='incompleto'){res.textContent='';return}
+  if(L.state==='nulo'){res.classList.add('err');res.textContent='Sem candidato com esse número (voto nulo)';return}
+  if(L.state==='repetido'){res.classList.add('err');res.textContent='Mesmo candidato da 1ª vaga: este voto é anulado';return}
+  res.innerHTML=`${badge(L.c.p)} <strong>${L.c.n}</strong>`;
+}
+slotsEl.querySelectorAll('.digits').forEach(box=>{
+  const i=+box.dataset.i;const ins=[...box.querySelectorAll('input')];
+  (saved[i]||'').split('').forEach((ch,k)=>{if(ins[k])ins[k].value=ch});
+  ins.forEach((inp,k)=>{
+    inp.addEventListener('input',()=>{inp.value=inp.value.replace(/\D/g,'').slice(-1);if(inp.value&&ins[k+1])ins[k+1].focus();check(i);if(i===2||i===3)check(i===2?3:2)});
+    inp.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!inp.value&&ins[k-1]){ins[k-1].focus();ins[k-1].value='';check(i);e.preventDefault()}});
+    inp.addEventListener('paste',e=>{const t=(e.clipboardData.getData('text')||'').replace(/\D/g,'');if(!t)return;e.preventDefault();ins.forEach((x,j)=>x.value=t[j]||'');check(i)});
+  });
+  check(i);
+});
+document.getElementById('limpar').addEventListener('click',()=>{slotsEl.querySelectorAll('input').forEach(x=>x.value='');store.set({});ORDEM.forEach((_,i)=>check(i))});
+const pv=document.getElementById('print-view');
+document.getElementById('printar').addEventListener('click',()=>{
+  document.getElementById('pv-list').innerHTML=ORDEM.map(([id,label],i)=>{const L=lookup(i);
+    const num=L.state==='ok'?L.val:(L.state==='nulo'||L.state==='repetido'?L.val:'');
+    const nome=L.state==='ok'?`${badge(L.c.p)} ${L.c.n}`:(L.state==='nulo'||L.state==='repetido'?'<span style="color:#9b2c2c">Voto nulo</span>':'<span style="color:#8a8880;font-weight:500">Em branco ou a definir</span>');
+    return `<li><span class="pv-cargo">${i+1}. ${label}</span><span class="pv-num${num?'':' vazio'}">${num||'—'}</span><span class="pv-nome">${nome}</span></li>`}).join('');
+  document.body.classList.add('printing');pv.hidden=false;window.scrollTo(0,0);
+});
+document.getElementById('voltar').addEventListener('click',()=>{document.body.classList.remove('printing');pv.hidden=true;document.getElementById('sec-cola').scrollIntoView()});
+
+/* Abas e tabelas */
+const tabsEl=document.getElementById('tabs');const tbl=document.getElementById('tabela');const meta=document.getElementById('meta');const busca=document.getElementById('busca');
+let atual='federal';
+tabsEl.innerHTML=CARGOS.map((c,i)=>`<button class="tab" role="tab" id="tab-${c.id}" aria-controls="painel" data-id="${c.id}"><span class="f">${c.nome}</span><span class="s">${c.curto||c.nome}</span></button>`).join('');
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function render(){
+  const c=byId[atual];const q=norm(busca.value.trim());
+  tabsEl.querySelectorAll('.tab').forEach(t=>{const on=t.dataset.id===atual;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
+  meta.textContent=c.nota+(c.dupla?'':'');
+  const match=r=>!q||norm(r.n).includes(q)||norm(r.p).includes(q)||r.num.includes(q);
+  const cols=c.polls.length;const span=3+cols;
+  let h=`<thead><tr><th class="col-ord">#</th><th>Candidato</th><th>Nº</th>${c.polls.map(p=>`<th class="r">${p}</th>`).join('')}</tr></thead><tbody>`;
+  let i=0,shown=0;
+  const row=(r,strong)=>{i++;if(!match(r))return'';shown++;return `<tr><td class="m col-ord">${i}</td><td><div class="cand">${r.n}</div><div class="cmeta">${badge(r.p)}${c.eleito&&r.e?'<span class="tag">Eleito em 2022</span>':''}</div></td><td class="num">${r.num}</td>${c.polls.map((_,k)=>`<td class="r ${strong&&k===0?'cand':'m'}">${r.v[k]||'—'}</td>`).join('')}</tr>`};
+  c.top.forEach(r=>h+=row(r,true));
+  if(c.rest.length){const rs=c.rest.map(r=>row(r,false)).join('');if(rs)h+=`<tr class="sep"><td colspan="${span}">Sem intenção de voto na pesquisa · ordem alfabética</td></tr>`+rs}
+  if(!q)c.extra.forEach(([n,...v])=>h+=`<tr><td class="col-ord"></td><td class="m">${n}</td><td></td>${c.polls.map((_,k)=>`<td class="r m">${v[k]||'—'}</td>`).join('')}</tr>`);
+  if(!shown)h+=`<tr><td class="empty" colspan="${span}">Nenhum candidato encontrado para “${busca.value}”.</td></tr>`;
+  tbl.innerHTML=h+'</tbody>';
+  document.getElementById('painel').setAttribute('aria-labelledby','tab-'+atual);
+}
+tabsEl.addEventListener('click',e=>{const t=e.target.closest('.tab');if(!t)return;atual=t.dataset.id;busca.value='';render()});
+tabsEl.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft'].includes(e.key))return;const ids=CARGOS.map(c=>c.id);let k=ids.indexOf(atual)+(e.key==='ArrowRight'?1:-1);k=(k+ids.length)%ids.length;atual=ids[k];busca.value='';render();document.getElementById('tab-'+atual).focus()});
+busca.addEventListener('input',render);
+document.getElementById('to-top').addEventListener('click',()=>{const r=matchMedia('(prefers-reduced-motion: reduce)').matches;window.scrollTo({top:0,behavior:r?'auto':'smooth'})});
+render();
+</script>
+
+</body>
+</html>
